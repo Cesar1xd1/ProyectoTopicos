@@ -17,7 +17,7 @@ public class ProductosDAO {
 		boolean resultado = false;
 		
 		
-		String sql = "INSERT INTO productos VALUES('"+p.getId()+"','"+p.getNombre()+"','"+p.getPrecio()+"','"+p.getProvedor()+"');";
+		String sql = "INSERT INTO productos VALUES('"+p.getId()+"','"+p.getNombre()+"','"+p.getPrecio()+"');";
 		resultado = conexion.ejecutarInstruccion(sql);
 		
 		return resultado;
@@ -26,7 +26,7 @@ public class ProductosDAO {
 	public boolean eliminarRegistro(String nc) {
 		boolean resultado = false;
 		
-		String sql = "DELETE FROM productos WHERE NumControl = \""+nc+"\"";
+		String sql = "DELETE FROM productos WHERE id = \""+nc+"\"";
 		resultado = conexion.ejecutarInstruccion(sql);
 		
 		return resultado;
@@ -35,8 +35,8 @@ public class ProductosDAO {
 	public boolean modificarRegistro(Productos a) {
 		boolean resultado = false;
 		
-		String sql = "UPDATE productos SET nombre='"+a.getNombre()+"', precio='"+a.getPrecio()+"', provedor='"+a.getProvedor()+"',"
-                + "                  WHERE id = '"+a.getId()+"';";
+		String sql = "UPDATE productos SET nombre='"+a.getNombre()+"', precio='"+a.getPrecio()+"'"+" "
+                + " WHERE id = '"+a.getId()+"';";
 		resultado = conexion.ejecutarInstruccion(sql);
 		
 		return resultado;

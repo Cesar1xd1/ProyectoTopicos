@@ -13,7 +13,7 @@ public class ConexionBD {
 		
 			String URL = "jdbc:mysql://localhost:3306/compu1xd1";
 			
-			//La contrase�a del profe                        ===v
+			
 			conexion = DriverManager.getConnection(URL,"root","CSRxd123");
 		} catch (ClassNotFoundException e) {
 			System.out.println("Error de DRIVER");

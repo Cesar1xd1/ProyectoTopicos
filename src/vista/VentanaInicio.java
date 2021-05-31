@@ -1,3 +1,76 @@
+package vista;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
+
+class VentanaPrincipal extends JFrame{
+	JMenuBar menuBar;
+	JMenu mProductos,mVentas;
+	JMenuItem addProducto,deleteProducto,updateProducto,searchProducto;
+	JMenuItem addVenta,deleteVenta,updateVenta,searchVenta;
+	
+	public VentanaPrincipal() {
+		getContentPane().setLayout(null);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		setSize(900,700);
+		setLocationRelativeTo(null);
+		setTitle("Compu1xd1");
+		setVisible(true);
+		
+		menuBar = new JMenuBar();
+			mProductos = new JMenu("Productos");
+			mVentas = new JMenu("Ventas");
+				addProducto = new JMenuItem("Agregar");
+				deleteProducto = new JMenuItem("Eliminar");
+				updateProducto = new JMenuItem("Modificar");
+				searchProducto = new JMenuItem("Buscar");
+				
+				addVenta = new JMenuItem("Agregar");
+				deleteVenta = new JMenuItem("Eliminar");
+				updateVenta = new JMenuItem("Modificar");
+				searchVenta = new JMenuItem("Buscar");
+		
+			mProductos.add(addProducto);
+			addProducto.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					//codigo para abrir InterFrame
+					//registro.setVisible(true);			
+					}});
+			mProductos.add(deleteProducto);
+			mProductos.add(updateProducto);
+			mProductos.add(searchProducto);
+			mVentas.add(addVenta);
+			mVentas.add(deleteVenta);
+			mVentas.add(updateVenta);
+			mVentas.add(searchVenta);
+			
+			menuBar.add(mProductos);
+			menuBar.add(mVentas);
+			
+	}//Constructor ventana principal
+}
+
+
+public class VentanaInicio {
+
+	public static void main(String[] args) {
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				new VentanaPrincipal();
+			}
+		});
+	}
+
+}
+
 /*package vista;
 
 import java.awt.*;
@@ -1245,3 +1318,4 @@ public class VentanaInicio {
 
 }
 */
+

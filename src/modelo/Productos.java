@@ -4,16 +4,16 @@ public class Productos {
 	private int id;
 	private String nombre;
 	private double precio;
-	private String provedor;
+	
 
 	
 	
-	public Productos(int id, String nombre, double precio, String provedor) {
+	public Productos(int id, String nombre, double precio) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.precio = precio;
-		this.provedor = provedor;
+		
 	
 	}
 	public int getId() {
@@ -34,12 +34,7 @@ public class Productos {
 	public void setPrecio(double precio) {
 		this.precio = precio;
 	}
-	public String getProvedor() {
-		return provedor;
-	}
-	public void setProvedor(String provedor) {
-		this.provedor = provedor;
-	}
+	
 	
 	
 	
