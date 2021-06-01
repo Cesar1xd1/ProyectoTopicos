@@ -175,7 +175,195 @@ class AltasP extends JInternalFrame implements ActionListener{
 				if(posible = true) {
 					Productos p = new Productos(dId, nombre, dPrecio);
 					ProductosDAO pDAO = new ProductosDAO();
-					pDAO.insertarRegistro(p);
+					if(pDAO.insertarRegistro(p)) {
+						
+					}else {
+						JOptionPane.showMessageDialog(null, "");
+					}
+					atuaclizaTabla(tabla);
+				}
+				
+				
+			}
+			
+		}else if(e.getSource()==bBorrar) {
+			tId.setText("");
+			tNombre.setText("");
+			tPrecio.setText("");
+		}
+		else if(e.getSource()==bCancelar) {
+			setVisible(false);
+		}
+		
+	}//Listener
+}//======SALTA-PRODUTOS======
+
+class BajasP extends JInternalFrame implements ActionListener{
+	JLabel titulo = new JLabel("Eliminar Producto");
+	ImageIcon icono = new ImageIcon("./recursos/B.png");
+	JLabel lImg = new JLabel();
+	JLabel lId = new JLabel("Id:");
+	JLabel lNombre = new JLabel("Nombre:");
+	JLabel lPrecio = new JLabel("Precio:");
+	JTextField tId = new JTextField();
+	JTextField tNombre = new JTextField();
+	JTextField tPrecio = new JTextField();
+	JButton bAgregar = new JButton("Agregar");
+	JButton bBorrar = new JButton("Limpiar");
+	JButton bCancelar = new JButton("Cancelar");
+	
+	
+	JTable tabla = new JTable();
+	
+	
+	public void atuaclizaTabla(JTable tabla) {
+		try {
+			String controlador = "com.mysql.cj.jdbc.Driver";
+			String url = "jdbc:mysql://localhost:3306/compu1xd1";
+			String Consulta = "SELECT * FROM productos";
+			
+			ResultSetTableModel modeloDatos = null;
+			try {
+				modeloDatos = new ResultSetTableModel(controlador, url, Consulta);
+			}catch (ClassNotFoundException ex) {
+				JOptionPane.showMessageDialog(getContentPane(), ex);
+			}
+			tabla.setModel(modeloDatos);
+		}//Try
+		catch (Exception sqle) {
+			JOptionPane.showMessageDialog(getContentPane(), sqle);
+		}
+	}
+	
+	public BajasP() {
+		
+		getContentPane().setLayout(null);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
+		setSize(600, 480);
+		setTitle("Agregar Producto");
+		setBackground(new Color(255,255,255));
+		
+		
+		titulo.setBounds(130, 30, 300,20 );
+		titulo.setFont(new Font("Arial Black", Font.PLAIN, 25));
+		add(titulo);
+		
+		
+		lImg.setBounds(360, 10, 100, 60);
+		lImg.setIcon(new ImageIcon(icono.getImage().getScaledInstance(100,60, Image.SCALE_SMOOTH)));
+		add(lImg);
+		
+		
+	
+		lId.setBounds(80,100,50,20);
+		add(lId);
+		
+		
+		lNombre.setBounds(80,150,50,20);
+		add(lNombre);
+		
+		
+		lPrecio.setBounds(80,200,50,20);
+		add(lPrecio);
+		
+		
+		tId.setBounds(105,100,205,20);
+		tId.setBackground(new Color(230,230,230));
+		tId.addKeyListener(new KeyAdapter(){
+		   public void keyTyped(KeyEvent e){
+		      char caracter = e.getKeyChar();
+		      if(((caracter < '0') || (caracter > '9')) &&(caracter != '\b')){
+		         e.consume(); 
+		      }
+		   }
+		});
+		
+		
+		
+		add(tId);
+		
+		
+		tNombre.setBounds(140,150,170,20);
+		tNombre.setBackground(new Color(230,230,230));
+		add(tNombre);
+		
+		
+		tPrecio.setBounds(130,200,180,20);
+		tPrecio.setBackground(new Color(230,230,230));
+		add(tPrecio);
+		
+		
+		bAgregar.setBounds(400, 90, 100, 30);
+		bAgregar.setBackground(new Color(100,255,170));
+		bAgregar.addActionListener(this);
+		add(bAgregar);
+		
+		
+		bBorrar.setBounds(400, 150, 100, 30);
+		bBorrar.setBackground(new Color(0,170,255));
+		bBorrar.addActionListener(this);
+		add(bBorrar);
+		
+		
+		bCancelar.setBounds(400, 210, 100, 30);
+		bCancelar.setBackground(new Color(255,200,0));
+		bCancelar.addActionListener(this);
+		add(bCancelar);
+		
+		String controlador = "com.mysql.cj.jdbc.Driver";
+		String url = "jdbc:mysql://localhost:3306/compu1xd1";
+		String Consulta = "SELECT * FROM productos";
+		
+		ResultSetTableModel modeloDatos = null;
+		try {
+			modeloDatos = new ResultSetTableModel(controlador, url, Consulta);
+		}catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		JScrollPane escroll = new JScrollPane(tabla);
+		tabla.setModel(modeloDatos);
+		
+		escroll.setBounds(40, 270, 500, 130);
+		add(escroll);
+		
+		
+		
+		
+	}
+
+	
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource()==bAgregar){
+			String id = tId.getText();
+			String nombre = tNombre.getText();
+			String precio = tPrecio.getText();
+			
+			double dPrecio = 0;
+			if(id.equals("")||nombre.equals("")||precio.equals("")) {
+				JOptionPane.showMessageDialog(null, "Algun campo quedo sin ser llenado");
+			}
+			else {
+				boolean posible = true;
+				int dId = Integer.parseInt(id);
+				try {
+					dPrecio = Double.parseDouble(precio);
+				}catch(Exception ex){
+					JOptionPane.showMessageDialog(null, "Precio invalido");
+					posible = false;
+				}
+				if(posible = true) {
+					Productos p = new Productos(dId, nombre, dPrecio);
+					ProductosDAO pDAO = new ProductosDAO();
+					if(pDAO.insertarRegistro(p)) {
+						
+					}else {
+						JOptionPane.showMessageDialog(null, "");
+					}
 					atuaclizaTabla(tabla);
 				}
 				
@@ -193,6 +381,11 @@ class AltasP extends JInternalFrame implements ActionListener{
 		
 	}//Listener
 }
+
+
+
+
+
 
 
 class VentanaPrincipal extends JFrame implements ActionListener{
@@ -229,6 +422,7 @@ class VentanaPrincipal extends JFrame implements ActionListener{
 		
 			mProductos.add(addProducto);
 			addProducto.addActionListener(this);
+			deleteProducto.addActionListener(this);
 			mProductos.add(deleteProducto);
 			mProductos.add(updateProducto);
 			mProductos.add(searchProducto);
@@ -254,6 +448,11 @@ class VentanaPrincipal extends JFrame implements ActionListener{
 			AltasP ap = new AltasP();
 			dp.add(ap);
 			ap.setVisible(true);
+			add(dp);
+		}else if(e.getSource()==deleteProducto) {
+			BajasP bp = new BajasP();
+			dp.add(bp);
+			bp.setVisible(true);
 			add(dp);
 		}
 		
