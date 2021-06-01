@@ -15,8 +15,6 @@ public class ProductosDAO {
 	
 	public boolean insertarRegistro(Productos p) {
 		boolean resultado = false;
-		
-		
 		String sql = "INSERT INTO productos VALUES('"+p.getId()+"','"+p.getNombre()+"','"+p.getPrecio()+"');";
 		resultado = conexion.ejecutarInstruccion(sql);
 		

@@ -38,7 +38,6 @@ public class ConexionBD {
 			int resultado = stn.executeUpdate(sql);
 			return resultado==1?true:false;
 		} catch (SQLException e) {
-			e.printStackTrace();
 			System.out.println("NO se pudo ejecutar la instruccion");
 			return false;
 		}
