@@ -1,33 +1,73 @@
 package vista;
 
-import java.awt.Font;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JDesktopPane;
-import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 
 import controlador.ProductosDAO;
 import modelo.Productos;
 
-class AltasP extends JInternalFrame{
+class AltasP extends JInternalFrame implements ActionListener{
 	public AltasP() {
 		getContentPane().setLayout(null);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
-		setSize(684, 538);
+		setSize(600, 480);
 		setTitle("Agregar Producto");
 		
 		JLabel titulo = new JLabel("Añadir Producto");
-		titulo.setBounds(300, 30, 100,20 );
+		titulo.setBounds(200, 30, 300,20 );
 		titulo.setFont(new Font("Arial Black", Font.PLAIN, 25));
 		add(titulo);
+		
+		JLabel lId = new JLabel("Id:");
+		lId.setBounds(80,100,50,20);
+		add(lId);
+		
+		JLabel lNombre = new JLabel("Nombre:");
+		lNombre.setBounds(80,150,50,20);
+		add(lNombre);
+		
+		JLabel lPrecio = new JLabel("Precio:");
+		lPrecio.setBounds(80,200,50,20);
+		add(lPrecio);
+		
+		JTextField tId = new JTextField();
+		tId.setBounds(105,100,205,20);
+		add(tId);
+		
+		JTextField tNombre = new JTextField();
+		tNombre.setBounds(140,150,170,20);
+		add(tNombre);
+		
+		JTextField tPrecio = new JTextField();
+		tPrecio.setBounds(130,200,180,20);
+		add(tPrecio);
+		
+		JButton bAgregar = new JButton("Agregar");
+		bAgregar.setBounds(400, 90, 80, 20);
+		bAgregar.addActionListener(this);
+		add(bAgregar);
+		
+		JButton bBorrar = new JButton("Limpiar");
+		bBorrar.setBounds(400, 150, 80, 20);
+		add(bBorrar);
+		
+		JButton bCancelar = new JButton("Limpiar");
+		bCancelar.setBounds(400, 210, 80, 20);
+		add(bCancelar);
+		
+		
+		
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
 
@@ -48,6 +88,7 @@ class VentanaPrincipal extends JFrame implements ActionListener{
 		setLocationRelativeTo(null);
 		setTitle("Compu1xd1");
 		setVisible(true);
+		
 		
 		
 		menuBar = new JMenuBar();
@@ -79,6 +120,7 @@ class VentanaPrincipal extends JFrame implements ActionListener{
 			
 			
 			dp.setBounds(0, 0, 700, 600);
+			dp.setBackground(new Color(192, 192, 192));
 			add(dp);		
 	}//Constructor ventana principal
 
