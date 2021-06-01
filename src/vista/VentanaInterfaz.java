@@ -208,10 +208,11 @@ class BajasP extends JInternalFrame implements ActionListener{
 	JTextField tId = new JTextField();
 	JTextField tNombre = new JTextField();
 	JTextField tPrecio = new JTextField();
-	JButton bAgregar = new JButton("Agregar");
+	JButton bEliminar = new JButton("Eliminar");
 	JButton bBorrar = new JButton("Limpiar");
 	JButton bCancelar = new JButton("Cancelar");
-	
+	JButton bBuscar = new JButton();
+	ImageIcon iconoBuscar = new ImageIcon("./recursos/buscar-barras.png");
 	
 	JTable tabla = new JTable();
 	
@@ -293,10 +294,16 @@ class BajasP extends JInternalFrame implements ActionListener{
 		add(tPrecio);
 		
 		
-		bAgregar.setBounds(400, 90, 100, 30);
-		bAgregar.setBackground(new Color(100,255,170));
-		bAgregar.addActionListener(this);
-		add(bAgregar);
+		bBuscar.setBounds(340, 90, 100, 30);
+		bBuscar.setIcon(iconoBuscar);
+		bBuscar.addActionListener(this);
+		add(bBuscar);
+		
+		
+		bEliminar.setBounds(460, 90, 100, 30);
+		bEliminar.setBackground(new Color(255,10,10));
+		bEliminar.addActionListener(this);
+		add(bEliminar);
 		
 		
 		bBorrar.setBounds(400, 150, 100, 30);
@@ -338,37 +345,8 @@ class BajasP extends JInternalFrame implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource()==bAgregar){
-			String id = tId.getText();
-			String nombre = tNombre.getText();
-			String precio = tPrecio.getText();
-			
-			double dPrecio = 0;
-			if(id.equals("")||nombre.equals("")||precio.equals("")) {
-				JOptionPane.showMessageDialog(null, "Algun campo quedo sin ser llenado");
-			}
-			else {
-				boolean posible = true;
-				int dId = Integer.parseInt(id);
-				try {
-					dPrecio = Double.parseDouble(precio);
-				}catch(Exception ex){
-					JOptionPane.showMessageDialog(null, "Precio invalido");
-					posible = false;
-				}
-				if(posible = true) {
-					Productos p = new Productos(dId, nombre, dPrecio);
-					ProductosDAO pDAO = new ProductosDAO();
-					if(pDAO.insertarRegistro(p)) {
-						
-					}else {
-						JOptionPane.showMessageDialog(null, "");
-					}
-					atuaclizaTabla(tabla);
-				}
-				
-				
-			}
+		if(e.getSource()==bEliminar){
+		
 			
 		}else if(e.getSource()==bBorrar) {
 			tId.setText("");
