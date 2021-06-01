@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 
 import javax.swing.*;
@@ -217,6 +218,20 @@ class BajasP extends JInternalFrame implements ActionListener{
 	JTable tabla = new JTable();
 	
 	
+	
+	
+	public void obtenerRegistroTabla() {
+		int i = (int)tabla.getValueAt(tabla.getSelectedRow(), 0);
+		tId.setText(i+""); 
+		tNombre.setText((String) tabla.getValueAt(tabla.getSelectedRow(), 1));
+		BigDecimal p = (BigDecimal) tabla.getValueAt(tabla.getSelectedRow(), 2);
+		tPrecio.setText((p+""));
+		
+		
+		
+	}
+	
+	
 	public void atuaclizaTabla(JTable tabla) {
 		try {
 			String controlador = "com.mysql.cj.jdbc.Driver";
@@ -286,11 +301,13 @@ class BajasP extends JInternalFrame implements ActionListener{
 		
 		tNombre.setBounds(140,150,170,20);
 		tNombre.setBackground(new Color(230,230,230));
+		tNombre.setEnabled(false);
 		add(tNombre);
 		
 		
 		tPrecio.setBounds(130,200,180,20);
 		tPrecio.setBackground(new Color(230,230,230));
+		tPrecio.setEnabled(false);
 		add(tPrecio);
 		
 		
@@ -334,6 +351,7 @@ class BajasP extends JInternalFrame implements ActionListener{
 		tabla.setModel(modeloDatos);
 		
 		escroll.setBounds(40, 270, 500, 130);
+		tabla.addMouseListener(new java.awt.event.MouseAdapter() {@Override public void mouseClicked(java.awt.event.MouseEvent evt) { obtenerRegistroTabla();}         });
 		add(escroll);
 		
 		
