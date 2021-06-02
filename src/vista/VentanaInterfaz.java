@@ -89,7 +89,7 @@ class AltasP extends JInternalFrame implements ActionListener{
 		tId.addKeyListener(new KeyAdapter(){
 		   public void keyTyped(KeyEvent e){
 		      char caracter = e.getKeyChar();
-		      if(((caracter < '0') || (caracter > '9')) &&(caracter != '\b')){
+		      if(((caracter < 48) || (caracter > 57)) &&(caracter != '\b')){
 		         e.consume(); 
 		      }
 		   }
