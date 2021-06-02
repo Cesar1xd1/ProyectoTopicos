@@ -1,19 +1,25 @@
 package vista;
 
-
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.math.BigDecimal;
 import java.sql.SQLException;
-
-import javax.swing.*;
-
-
 import controlador.ProductosDAO;
 import modelo.Productos;
+
+class AltasV extends JInternalFrame implements ActionListener{
+
+	
+	
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		
+	}
+	
+}
 
 class AltasP extends JInternalFrame implements ActionListener{
 	JLabel titulo = new JLabel("Añadir Producto");
@@ -28,17 +34,13 @@ class AltasP extends JInternalFrame implements ActionListener{
 	JButton bAgregar = new JButton("Agregar");
 	JButton bBorrar = new JButton("Limpiar");
 	JButton bCancelar = new JButton("Cancelar");
-	
-	
 	JTable tabla = new JTable();
-	
 	
 	public void atuaclizaTabla(JTable tabla) {
 		try {
 			String controlador = "com.mysql.cj.jdbc.Driver";
 			String url = "jdbc:mysql://localhost:3306/compu1xd1";
-			String Consulta = "SELECT * FROM productos";
-			
+			String Consulta = "SELECT * FROM productos";		
 			ResultSetTableModel modeloDatos = null;
 			try {
 				modeloDatos = new ResultSetTableModel(controlador, url, Consulta);
@@ -52,38 +54,27 @@ class AltasP extends JInternalFrame implements ActionListener{
 		}
 	}
 	
-	public AltasP() {
-		
+	public AltasP() {	
 		getContentPane().setLayout(null);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		setSize(600, 480);
 		setTitle("Agregar Producto");
 		setBackground(new Color(255,255,255));
 		
-		
 		titulo.setBounds(130, 30, 300,20 );
 		titulo.setFont(new Font("Arial Black", Font.PLAIN, 25));
 		add(titulo);
-		
 		
 		lImg.setBounds(360, 15, 50, 50);
 		lImg.setIcon(new ImageIcon(icono.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
 		add(lImg);
 		
-		
-	
 		lId.setBounds(80,100,50,20);
 		add(lId);
-		
-		
 		lNombre.setBounds(80,150,50,20);
 		add(lNombre);
-		
-		
 		lPrecio.setBounds(80,200,50,20);
 		add(lPrecio);
-		
-		
 		tId.setBounds(105,100,205,20);
 		tId.setBackground(new Color(230,230,230));
 		tId.addKeyListener(new KeyAdapter(){
@@ -94,33 +85,25 @@ class AltasP extends JInternalFrame implements ActionListener{
 		      }
 		   }
 		});
-		
-		
-		
 		add(tId);
-		
-		
+
 		tNombre.setBounds(140,150,170,20);
 		tNombre.setBackground(new Color(230,230,230));
 		add(tNombre);
-		
-		
+				
 		tPrecio.setBounds(130,200,180,20);
 		tPrecio.setBackground(new Color(230,230,230));
 		add(tPrecio);
-		
 		
 		bAgregar.setBounds(400, 90, 100, 30);
 		bAgregar.setBackground(new Color(100,255,170));
 		bAgregar.addActionListener(this);
 		add(bAgregar);
 		
-		
 		bBorrar.setBounds(400, 150, 100, 30);
 		bBorrar.setBackground(new Color(0,170,255));
 		bBorrar.addActionListener(this);
 		add(bBorrar);
-		
 		
 		bCancelar.setBounds(400, 210, 100, 30);
 		bCancelar.setBackground(new Color(255,200,0));
@@ -130,7 +113,6 @@ class AltasP extends JInternalFrame implements ActionListener{
 		String controlador = "com.mysql.cj.jdbc.Driver";
 		String url = "jdbc:mysql://localhost:3306/compu1xd1";
 		String Consulta = "SELECT * FROM productos";
-		
 		ResultSetTableModel modeloDatos = null;
 		try {
 			modeloDatos = new ResultSetTableModel(controlador, url, Consulta);
@@ -139,27 +121,18 @@ class AltasP extends JInternalFrame implements ActionListener{
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 		JScrollPane escroll = new JScrollPane(tabla);
 		tabla.setModel(modeloDatos);
-		
 		escroll.setBounds(40, 270, 500, 130);
 		add(escroll);
-		
-		
-		
-		
 	}
 
-	
-	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==bAgregar){
 			String id = tId.getText();
 			String nombre = tNombre.getText();
-			String precio = tPrecio.getText();
-			
+			String precio = tPrecio.getText();			
 			double dPrecio = 0;
 			boolean posible = true;
 			if(id.equals("")||nombre.equals("")||precio.equals("")) {
@@ -173,8 +146,6 @@ class AltasP extends JInternalFrame implements ActionListener{
 					JOptionPane.showMessageDialog(null, "Precio invalido");
 					
 				}
-				
-				
 				if(posible == true ) {
 					Productos p = new Productos(dId, nombre, dPrecio);
 					ProductosDAO pDAO = new ProductosDAO();
@@ -187,10 +158,7 @@ class AltasP extends JInternalFrame implements ActionListener{
 					JOptionPane.showMessageDialog(null, "Necesitas ingresar una cantidad de dinero correcta");
 					tPrecio.setText("");
 				}
-				
-				
 			}
-			
 		}else if(e.getSource()==bBorrar) {
 			tId.setText("");
 			tNombre.setText("");
@@ -199,7 +167,6 @@ class AltasP extends JInternalFrame implements ActionListener{
 		else if(e.getSource()==bCancelar) {
 			setVisible(false);
 		}
-		
 	}//Listener
 }//======ALTA-PRODUTOS======
 
