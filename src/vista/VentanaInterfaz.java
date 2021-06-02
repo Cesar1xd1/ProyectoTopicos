@@ -121,7 +121,17 @@ class AltasV extends JInternalFrame implements ActionListener{
 		add(cA);
 		bHoy.setBounds(380, 310, 70, 20);
 		add(bHoy);
+		bHoy.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cD.setSelectedIndex(fecha.getDay()-2);
+				cM.setSelectedIndex(fecha.getMonth());
+				cA.setSelectedItem(""+(1900+fecha.getYear()));
+			}
+		});
 	
+		
+		
 		bAgregar.setBounds(550, 90, 100, 30);
 		bAgregar.setBackground(new Color(100,255,170));
 		bAgregar.addActionListener(this);
@@ -144,9 +154,6 @@ class AltasV extends JInternalFrame implements ActionListener{
 		
 		tNombre.setEnabled(false);
 		tPrecio.setEnabled(false);
-		
-		
-		
 	}
 	
 	
