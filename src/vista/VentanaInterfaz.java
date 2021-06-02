@@ -577,10 +577,10 @@ class ConsultasP extends JInternalFrame implements ActionListener{
 	ImageIcon iconoBuscar = new ImageIcon("./recursos/buscar-barras.png");
 	JTable tabla = new JTable();
 	JLabel lFiltros = new JLabel("Filtro de busqueda");
+	JRadioButton rbTodos = new JRadioButton("TODOS");
 	JRadioButton rbId = new JRadioButton();
 	JRadioButton rbNombre = new JRadioButton();
 	JRadioButton rbPrecio = new JRadioButton();
-	JRadioButton rbTodos = new JRadioButton("TODOS");
 	ButtonGroup bGrupo = new ButtonGroup();
 	
 	public void obtenerRegistroTabla() {
@@ -616,6 +616,9 @@ class ConsultasP extends JInternalFrame implements ActionListener{
 		setTitle("Agregar Producto");
 		setBackground(new Color(255,255,255));
 		
+		
+		
+		
 		titulo.setBounds(130, 30, 300,20 );
 		titulo.setFont(new Font("Arial Black", Font.PLAIN, 25));
 		add(titulo);
@@ -624,6 +627,22 @@ class ConsultasP extends JInternalFrame implements ActionListener{
 		lImg.setIcon(new ImageIcon(icono.getImage().getScaledInstance(40,40, Image.SCALE_SMOOTH)));
 		add(lImg);
 		
+		
+		
+		rbTodos.setBounds(30, 100, 70, 20);
+		rbTodos.setBackground(new Color(255,255,255));
+		bGrupo.add(rbTodos);
+		rbTodos.setSelected(true);
+		add(rbTodos);
+		rbTodos.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tId.setEnabled(true);
+				tNombre.setEnabled(true);
+				tPrecio.setEnabled(true);
+				
+			}
+		});
 		
 		rbId.setBounds(135, 100, 20, 20);
 		rbId.setBackground(new Color(255,255,255));
@@ -664,10 +683,7 @@ class ConsultasP extends JInternalFrame implements ActionListener{
 				
 			}
 		});
-		rbTodos.setBounds(30, 150, 70, 20);
-		rbTodos.setBackground(new Color(255,255,255));
-		bGrupo.add(rbTodos);
-		add(rbTodos);
+	
 		
 		lFiltros.setBounds(30, 70, 150, 20);
 		add(lFiltros);
@@ -746,18 +762,52 @@ class ConsultasP extends JInternalFrame implements ActionListener{
 		}
 		else if(e.getSource()==bCancelar) {
 			setVisible(false);
+			
 		}else if(e.getSource()==bBuscar) {
 			String sql = "SELECT * FROM productos ";
-			boolean primero=true;
-				if (!primero) {sql+=" AND ";}else {sql+="WHERE ";}
-				primero=false;
-				sql+=("id = '"+tId.getText()+"'");
-				
-				atuaclizaTabla(sql);
+			if(rbId.isSelected()) {
+				if(tId.getText().equals("")) {
+					JOptionPane.showMessageDialog(null,"Ingresa Id para Consultarlo");
+				}else {
+					sql = sql + ("WHERE id LIKE'"+tId.getText()+"%'");
+					atuaclizaTabla(sql);
+					tNombre.setText("");
+					tPrecio.setText("");
+				}
+			}else if(rbNombre.isSelected()) {
+				if(tNombre.getText().equals("")) {
+					JOptionPane.showMessageDialog(null,"Un Nombre a consultar");
+				}else {
+					sql = sql + ("WHERE nombre LIKE'"+tNombre.getText()+"%'");
+					atuaclizaTabla(sql);
+					tId.setText("");
+					tPrecio.setText("");
+				}
+			}else if(rbPrecio.isSelected()) {
+				if(tPrecio.getText().equals("")) {
+					JOptionPane.showMessageDialog(null,"Ingrese un precio a Consultar");
+				}else {
+					sql = sql + ("WHERE precio LIKE'"+tPrecio.getText()+"%'");
+					boolean poder = true;
+					try {
+						double x = Double.parseDouble(tPrecio.getText());
+					}catch(Exception es){
+						poder = false;
+						tPrecio.setText("");
+						JOptionPane.showMessageDialog(null,"Precio invalido");
+					}
+					if(poder==true) {
+						atuaclizaTabla(sql);
+					}
+					
+					tId.setText("");
+					tNombre.setText("");
+				}
+			}
 		}
 		
 	}//Listener
-}//BAJA-PRODUCTOS
+}//CONSULTAS-PRODUCTOS
 
 
 
