@@ -89,7 +89,7 @@ class AltasP extends JInternalFrame implements ActionListener{
 		tId.addKeyListener(new KeyAdapter(){
 		   public void keyTyped(KeyEvent e){
 		      char caracter = e.getKeyChar();
-		      if(((caracter < '0') || (caracter > '9')) &&(caracter != '\b')){
+		      if(((caracter < 48) || (caracter > 57)) &&(caracter != '\b')){
 		         e.consume(); 
 		      }
 		   }
@@ -273,7 +273,7 @@ class BajasP extends JInternalFrame implements ActionListener{
 		tId.addKeyListener(new KeyAdapter(){
 		   public void keyTyped(KeyEvent e){
 		      char caracter = e.getKeyChar();
-		      if(((caracter < '0') || (caracter > '9')) &&(caracter != '\b')){
+		      if(((caracter < 48) || (caracter > 57)) &&(caracter != '\b')){
 		         e.consume(); 
 		      }
 		   }
@@ -449,7 +449,7 @@ class CambiosP extends JInternalFrame implements ActionListener{
 		tId.addKeyListener(new KeyAdapter(){
 		   public void keyTyped(KeyEvent e){
 		      char caracter = e.getKeyChar();
-		      if(((caracter < '0') || (caracter > '9')) &&(caracter != '\b')){
+		      if(((caracter < 48) || (caracter > 57)) &&(caracter != '\b')){
 		         e.consume(); 
 		      }
 		   }
@@ -561,7 +561,203 @@ class CambiosP extends JInternalFrame implements ActionListener{
 	}//Listener
 }//CAMBIOS-PRODUCTOS
 
+class ConsultasP extends JInternalFrame implements ActionListener{
+	JLabel titulo = new JLabel("Consulta Producto");
+	ImageIcon icono = new ImageIcon("./recursos/C2.png");
+	JLabel lImg = new JLabel();
+	JLabel lId = new JLabel("Id:");
+	JLabel lNombre = new JLabel("Nombre:");
+	JLabel lPrecio = new JLabel("Precio:");
+	JTextField tId = new JTextField();
+	JTextField tNombre = new JTextField();
+	JTextField tPrecio = new JTextField();
+	JButton bBorrar = new JButton("Limpiar");
+	JButton bCancelar = new JButton("Cancelar");
+	JButton bBuscar = new JButton();
+	ImageIcon iconoBuscar = new ImageIcon("./recursos/buscar-barras.png");
+	JTable tabla = new JTable();
+	JLabel lFiltros = new JLabel("Filtro de busqueda");
+	JRadioButton rbId = new JRadioButton();
+	JRadioButton rbNombre = new JRadioButton();
+	JRadioButton rbPrecio = new JRadioButton();
+	JRadioButton rbTodos = new JRadioButton("TODOS");
+	ButtonGroup bGrupo = new ButtonGroup();
+	
+	public void obtenerRegistroTabla() {
+		int i = (int)tabla.getValueAt(tabla.getSelectedRow(), 0);
+		tId.setText(i+""); 
+		tNombre.setText((String) tabla.getValueAt(tabla.getSelectedRow(), 1));
+		BigDecimal p = (BigDecimal) tabla.getValueAt(tabla.getSelectedRow(), 2);
+		tPrecio.setText((p+""));
+	}
+	
+	public void atuaclizaTabla(String sql) {
+		try {
+			String controlador = "com.mysql.cj.jdbc.Driver";
+			String url = "jdbc:mysql://localhost:3306/compu1xd1";
+			
+			ResultSetTableModel modeloDatos = null;
+			try {
+				modeloDatos = new ResultSetTableModel(controlador, url, sql);
+			}catch (ClassNotFoundException ex) {
+				JOptionPane.showMessageDialog(getContentPane(), ex);
+			}
+			tabla.setModel(modeloDatos);
+		}//Try
+		catch (Exception sqle) {
+			JOptionPane.showMessageDialog(getContentPane(), sqle);
+		}
+	}
+	
+	public ConsultasP() {
+		getContentPane().setLayout(null);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
+		setSize(600, 480);
+		setTitle("Agregar Producto");
+		setBackground(new Color(255,255,255));
+		
+		titulo.setBounds(130, 30, 300,20 );
+		titulo.setFont(new Font("Arial Black", Font.PLAIN, 25));
+		add(titulo);
+		
+		lImg.setBounds(400, 20, 40, 40);
+		lImg.setIcon(new ImageIcon(icono.getImage().getScaledInstance(40,40, Image.SCALE_SMOOTH)));
+		add(lImg);
+		
+		
+		rbId.setBounds(135, 100, 20, 20);
+		rbId.setBackground(new Color(255,255,255));
+		bGrupo.add(rbId);
+		add(rbId);
+		rbId.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tId.setEnabled(true);
+				tNombre.setEnabled(false);
+				tPrecio.setEnabled(false);
+				
+			}
+		});
+		rbNombre.setBounds(135, 150, 20, 20);
+		rbNombre.setBackground(new Color(255,255,255));
+		bGrupo.add(rbNombre);
+		add(rbNombre);
+		rbNombre.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tId.setEnabled(false);
+				tNombre.setEnabled(true);
+				tPrecio.setEnabled(false);
+				
+			}
+		});
+		rbPrecio.setBounds(135, 200, 20, 20);
+		rbPrecio.setBackground(new Color(255,255,255));
+		bGrupo.add(rbPrecio);
+		add(rbPrecio);
+		rbPrecio.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tId.setEnabled(false);
+				tNombre.setEnabled(false);
+				tPrecio.setEnabled(true);
+				
+			}
+		});
+		rbTodos.setBounds(30, 150, 70, 20);
+		rbTodos.setBackground(new Color(255,255,255));
+		bGrupo.add(rbTodos);
+		add(rbTodos);
+		
+		lFiltros.setBounds(30, 70, 150, 20);
+		add(lFiltros);
+		lId.setBounds(160,100,50,20);
+		add(lId);
+		lNombre.setBounds(160,150,50,20);
+		add(lNombre);
+		lPrecio.setBounds(160,200,50,20);
+		add(lPrecio);
+		
+		tId.setBounds(185,100,205,20);
+		tId.setBackground(new Color(230,230,230));
+		tId.addKeyListener(new KeyAdapter(){
+		   public void keyTyped(KeyEvent e){
+		      char caracter = e.getKeyChar();
+		      if(((caracter < 48) || (caracter > 57)) &&(caracter != '\b')){
+		         e.consume(); 
+		      }
+		   }
+		});
+		add(tId);
+		
+		tNombre.setBounds(220,150,170,20);
+		tNombre.setBackground(new Color(230,230,230));
+		tNombre.setEnabled(false);
+		add(tNombre);
+		
+		tPrecio.setBounds(210,200,180,20);
+		tPrecio.setBackground(new Color(230,230,230));
+		tPrecio.setEnabled(false);
+		add(tPrecio);
+		
+		bBuscar.setBounds(430, 90, 100, 30);
+		bBuscar.setIcon(iconoBuscar);
+		bBuscar.addActionListener(this);
+		add(bBuscar);
+		
+		
+		
+		bBorrar.setBounds(430, 150, 100, 30);
+		bBorrar.setBackground(new Color(0,170,255));
+		bBorrar.addActionListener(this);
+		add(bBorrar);
+		
+		bCancelar.setBounds(430, 210, 100, 30);
+		bCancelar.setBackground(new Color(255,200,0));
+		bCancelar.addActionListener(this);
+		add(bCancelar);
+		
+		String controlador = "com.mysql.cj.jdbc.Driver";
+		String url = "jdbc:mysql://localhost:3306/compu1xd1";
+		String Consulta = "SELECT * FROM productos";
+		ResultSetTableModel modeloDatos = null;
+		try {
+			modeloDatos = new ResultSetTableModel(controlador, url, Consulta);
+		}catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		JScrollPane escroll = new JScrollPane(tabla);
+		tabla.setModel(modeloDatos);
+		
+		escroll.setBounds(40, 270, 500, 130);
+		tabla.addMouseListener(new java.awt.event.MouseAdapter() {@Override public void mouseClicked(java.awt.event.MouseEvent evt) { obtenerRegistroTabla();}         });
+		add(escroll);
+	}
 
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource()==bBorrar) {
+			tId.setText("");
+			tNombre.setText("");
+			tPrecio.setText("");
+		}
+		else if(e.getSource()==bCancelar) {
+			setVisible(false);
+		}else if(e.getSource()==bBuscar) {
+			String sql = "SELECT * FROM productos ";
+			boolean primero=true;
+				if (!primero) {sql+=" AND ";}else {sql+="WHERE ";}
+				primero=false;
+				sql+=("id = '"+tId.getText()+"'");
+				
+				atuaclizaTabla(sql);
+		}
+		
+	}//Listener
+}//BAJA-PRODUCTOS
 
 
 
@@ -636,6 +832,11 @@ class VentanaPrincipal extends JFrame implements ActionListener{
 			add(dp);
 		}else if(e.getSource()==updateProducto) {
 			CambiosP cp = new CambiosP();
+			dp.add(cp);
+			cp.setVisible(true);
+			add(dp);
+		}else if(e.getSource()==searchProducto) {
+			ConsultasP cp = new ConsultasP();
 			dp.add(cp);
 			cp.setVisible(true);
 			add(dp);
