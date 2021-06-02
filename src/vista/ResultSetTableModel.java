@@ -130,8 +130,12 @@ public class ResultSetTableModel extends AbstractTableModel {
       // obtener un valor en una fila y columna espec�ficas del objeto ResultSet
       try {
          conjuntoResultados.absolute( fila + 1 );
-
-         return conjuntoResultados.getObject( columna + 1 );
+         try {
+        	 return conjuntoResultados.getObject( columna + 1 );
+         }catch(Exception eee) {
+        	 
+         }
+         
       }
 
       // atrapar excepciones SQLExceptions e imprimir mensaje de error

@@ -1,6 +1,9 @@
 package vista;
 
 import javax.swing.*;
+
+
+
 import java.awt.*;
 import java.awt.event.*;
 import java.math.BigDecimal;
@@ -8,7 +11,9 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import controlador.ProductosDAO;
+import controlador.VentasDAO;
 import modelo.Productos;
+import modelo.Venta;
 
 class AltasV extends JInternalFrame implements ActionListener{
 	JLabel titulo = new JLabel("Realizar Venta");
@@ -35,15 +40,89 @@ class AltasV extends JInternalFrame implements ActionListener{
 	JButton bCancelar = new JButton("Cancelar");
 	JButton bBuscar = new JButton();
 	JTable tabla = new JTable();
+	JTable tablaP = new JTable();
 	JButton bHoy = new JButton("Hoy");
 	java.util.Date fecha = new Date();
 	
+	public void atuaclizaTabla(JTable tabla) {
+		try {
+			String controlador = "com.mysql.cj.jdbc.Driver";
+			String url = "jdbc:mysql://localhost:3306/compu1xd1";
+			String Consulta = "SELECT * FROM ventas";		
+			ResultSetTableModel modeloDatos = null;
+			try {
+				modeloDatos = new ResultSetTableModel(controlador, url, Consulta);
+			}catch (ClassNotFoundException ex) {
+				JOptionPane.showMessageDialog(getContentPane(), ex);
+			}
+			tabla.setModel(modeloDatos);
+		}//Try
+		catch (Exception sqle) {
+			JOptionPane.showMessageDialog(getContentPane(), sqle);
+		}
+	}
+	
+	public void atuaclizaTablaP(String sql) {
+		try {
+			String controlador = "com.mysql.cj.jdbc.Driver";
+			String url = "jdbc:mysql://localhost:3306/compu1xd1";
+			
+			ResultSetTableModel modeloDatos = null;
+			try {
+				modeloDatos = new ResultSetTableModel(controlador, url, sql);
+			}catch (ClassNotFoundException ex) {
+				JOptionPane.showMessageDialog(getContentPane(), ex);
+			}
+			tablaP.setModel(modeloDatos);
+		}//Try
+		catch (Exception sqle) {
+			JOptionPane.showMessageDialog(getContentPane(), sqle);
+		}
+	}
+	
+	
 	public void obtenerRegistro1() {
-		int i = (int)tabla.getValueAt(0, 0);
-		tIdP.setText(i+""); 
-		tNombre.setText((String) tabla.getValueAt(0, 1));
-		BigDecimal p = (BigDecimal) tabla.getValueAt(0, 2);
-		tPrecio.setText((p+""));
+		try {
+			tNombre.setText((String) tablaP.getValueAt(0, 1));
+			BigDecimal p = (BigDecimal) tablaP.getValueAt(0, 2);
+			tPrecio.setText((p+""));
+		}catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Producto no existe");
+			tNombre.setText("");
+			tPrecio.setText("");
+		}
+		
+	}
+	public String laFecha() {
+		String d = (String) cD.getSelectedItem();
+		String m = "";
+		if(cM.getSelectedIndex()==0) {
+			m = "01";
+		}else if(cM.getSelectedIndex()==1) {
+			m = "02";
+		}else if(cM.getSelectedIndex()==2) {
+			m = "03";
+		}else if(cM.getSelectedIndex()==3) {
+			m = "04";
+		}else if(cM.getSelectedIndex()==4) {
+			m = "05";
+		}else if(cM.getSelectedIndex()==5) {
+			m = "06";
+		}else if(cM.getSelectedIndex()==6) {
+			m = "07";
+		}else if(cM.getSelectedIndex()==7) {
+			m = "08";
+		}else if(cM.getSelectedIndex()==8) {
+			m = "09";
+		}else if(cM.getSelectedIndex()==9) {
+			m = "10";
+		}else if(cM.getSelectedIndex()==10) {
+			m = "11";
+		}else if(cM.getSelectedIndex()==11) {
+			m = "12";
+		}
+		String a = (String) cA.getSelectedItem();
+		return a+"-"+m+"-"+d;
 	}
 	
 	
@@ -82,9 +161,25 @@ class AltasV extends JInternalFrame implements ActionListener{
 		
 		tId.setBounds(125, 100, 300, 20);
 		tId.setBackground(new Color(230,230,230));
+		tId.addKeyListener(new KeyAdapter(){
+			   public void keyTyped(KeyEvent e){
+				      char caracter = e.getKeyChar();
+				      if(((caracter < 48) || (caracter > 57)) &&(caracter != '\b')){
+				         e.consume(); 
+				      }
+				   }
+				});
 		add(tId);
 		tIdP.setBounds(180, 150, 245, 20);
 		tIdP.setBackground(new Color(230,230,230));
+		tIdP.addKeyListener(new KeyAdapter(){
+			   public void keyTyped(KeyEvent e){
+				      char caracter = e.getKeyChar();
+				      if(((caracter < 48) || (caracter > 57)) &&(caracter != '\b')){
+				         e.consume(); 
+				      }
+				   }
+				});
 		add(tIdP);
 		tNombre.setBounds(160, 200, 265, 20);
 		tNombre.setBackground(new Color(230,230,230));
@@ -94,7 +189,12 @@ class AltasV extends JInternalFrame implements ActionListener{
 		add(tPrecio);
 		cD.setBounds(150, 310, 50, 20);
 		for(int i = 1;i!=32;i=i+1) {
-			cD.addItem(""+i);
+			if(i<10) {
+				cD.addItem("0"+i);
+			}else {
+				cD.addItem(""+i);
+			}
+			
 		}
 		add(cD);
 		
@@ -154,6 +254,24 @@ class AltasV extends JInternalFrame implements ActionListener{
 		
 		tNombre.setEnabled(false);
 		tPrecio.setEnabled(false);
+		
+		
+		String controlador = "com.mysql.cj.jdbc.Driver";
+		String url = "jdbc:mysql://localhost:3306/compu1xd1";
+		String Consulta = "SELECT * FROM ventas";
+		ResultSetTableModel modeloDatos = null;
+		try {
+			modeloDatos = new ResultSetTableModel(controlador, url, Consulta);
+		}catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		JScrollPane escroll = new JScrollPane(tabla);
+		tabla.setModel(modeloDatos);
+		escroll.setBounds(40, 350, 600, 130);
+		add(escroll);
+		
 	}
 	
 	
@@ -161,7 +279,54 @@ class AltasV extends JInternalFrame implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if(e.getSource()==bBuscar) {
+			String s = "SELECT * FROM productos WHERE id = '"+tIdP.getText()+"'";
+				atuaclizaTablaP(s);
+				obtenerRegistro1();
 		
+		}else if(e.getSource()==bAgregar) {
+			int id ;
+			int idP;
+			Double precio = 0.0;
+			if (tId.getText().equals("")) {
+				id = 0;
+			}else {
+				id = Integer.parseInt(tId.getText());
+			}
+			if (tIdP.getText().equals("")) {
+				idP = 0;
+			}else {
+				 idP = Integer.parseInt(tIdP.getText());
+			}
+			String nombre = tNombre.getText();
+			try {
+				 precio = Double.parseDouble(tPrecio.getText());
+			} catch (Exception e2) {
+				JOptionPane.showMessageDialog(null, "no dejes campos vacios");
+			}
+			
+			String fecha = laFecha();
+			if(id==0||idP==0||nombre.equals("")||precio.equals("")) {
+				
+			}else {
+				Venta v  = new Venta(id,idP, nombre, precio,fecha);
+				VentasDAO vDAO = new VentasDAO();
+				if(vDAO.insertarRegistro(v)) {
+					
+				}else {
+					JOptionPane.showMessageDialog(null, "El ID ya existe");
+				}
+				atuaclizaTabla(tabla);
+				
+			}
+		}else if(e.getSource()==bBorrar) {
+			tId.setText("");
+			tIdP.setText("");
+			tNombre.setText("");
+			tPrecio.setText("");
+		}else if(e.getSource()==bCancelar) {
+			setVisible(false);
+		}
 		
 	}
 	
