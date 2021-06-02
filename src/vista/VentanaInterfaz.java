@@ -89,7 +89,7 @@ class AltasP extends JInternalFrame implements ActionListener{
 		tId.addKeyListener(new KeyAdapter(){
 		   public void keyTyped(KeyEvent e){
 		      char caracter = e.getKeyChar();
-		      if(((caracter < 48) || (caracter > 57)) &&(caracter != '\b')){
+		      if(((caracter < '0') || (caracter > '9')) &&(caracter != '\b')){
 		         e.consume(); 
 		      }
 		   }
@@ -171,21 +171,21 @@ class AltasP extends JInternalFrame implements ActionListener{
 				}catch(Exception ex){
 					posible = false;
 					JOptionPane.showMessageDialog(null, "Precio invalido");
-	
+					
 				}
 				
 				
-				if(posible == true || dPrecio == 0) {
+				if(posible == true ) {
 					Productos p = new Productos(dId, nombre, dPrecio);
 					ProductosDAO pDAO = new ProductosDAO();
 					if(pDAO.insertarRegistro(p)) {
-						
 					}else {
-						JOptionPane.showMessageDialog(null, "Id existente, si desea modificarlo vaya a MODIFICAR");
+						JOptionPane.showMessageDialog(null, "Registro existente, si desea modificarlo vaya a MODIFICAR");
 					}
 					atuaclizaTabla(tabla);
 				}else {
 					JOptionPane.showMessageDialog(null, "Necesitas ingresar una cantidad de dinero correcta");
+					tPrecio.setText("");
 				}
 				
 				
@@ -385,6 +385,25 @@ class CambiosP extends JInternalFrame implements ActionListener{
 		tPrecio.setText((p+""));
 	}
 	
+	public void atuaclizaTabla2(JTable tabla) {
+		try {
+			String controlador = "com.mysql.cj.jdbc.Driver";
+			String url = "jdbc:mysql://localhost:3306/compu1xd1";
+			String Consulta = "SELECT * FROM productos";
+			
+			ResultSetTableModel modeloDatos = null;
+			try {
+				modeloDatos = new ResultSetTableModel(controlador, url, Consulta);
+			}catch (ClassNotFoundException ex) {
+				JOptionPane.showMessageDialog(getContentPane(), ex);
+			}
+			tabla.setModel(modeloDatos);
+		}//Try
+		catch (Exception sqle) {
+			JOptionPane.showMessageDialog(getContentPane(), sqle);
+		}
+	}
+	
 	public void atuaclizaTabla(String sql) {
 		try {
 			String controlador = "com.mysql.cj.jdbc.Driver";
@@ -488,7 +507,40 @@ class CambiosP extends JInternalFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==bGuardar){
+			String id = tId.getText();
+			String nombre = tNombre.getText();
+			String precio = tPrecio.getText();
 			
+			double dPrecio = 0;
+			boolean posible = true;
+			if(id.equals("")||nombre.equals("")||precio.equals("")) {
+				JOptionPane.showMessageDialog(null, "Algun campo quedo sin ser llenado");
+			}else {
+				int dId = Integer.parseInt(id);
+				try {
+					dPrecio = Double.parseDouble(precio);
+				}catch(Exception ex){
+					posible = false;
+					JOptionPane.showMessageDialog(null, "Precio invalido");
+					
+				}
+				
+				
+				if(posible == true ) {
+					Productos p = new Productos(dId, nombre, dPrecio);
+					ProductosDAO pDAO = new ProductosDAO();
+					if(pDAO.modificarRegistro(p)) {
+					}else {
+						JOptionPane.showMessageDialog(null, "xd");
+					}
+					atuaclizaTabla2(tabla);
+				}else {
+					JOptionPane.showMessageDialog(null, "Necesitas ingresar una cantidad de dinero correcta");
+					tPrecio.setText("");
+				}
+				
+				
+			}
 		}
 		else if(e.getSource()==bCancelar) {
 			setVisible(false);
@@ -500,6 +552,10 @@ class CambiosP extends JInternalFrame implements ActionListener{
 				sql+=("id = '"+tId.getText()+"'");
 				
 				atuaclizaTabla(sql);
+		}else if(e.getSource()==bBorrar){
+			tId.setText("");
+			tNombre.setText("");
+			tPrecio.setText("");
 		}
 		
 	}//Listener
