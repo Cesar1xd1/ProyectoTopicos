@@ -362,8 +362,6 @@ class BajasV extends JInternalFrame implements ActionListener{
 		BigDecimal p = (BigDecimal) tabla.getValueAt(tabla.getSelectedRow(), 3);
 		tPrecio.setText((p+""));
 	}
-	
-	
 	public void atuaclizaTabla(JTable tabla) {
 		try {
 			String controlador = "com.mysql.cj.jdbc.Driver";
@@ -381,9 +379,6 @@ class BajasV extends JInternalFrame implements ActionListener{
 			JOptionPane.showMessageDialog(getContentPane(), sqle);
 		}
 	}
-	
-	
-	
 	public void obtenerRegistro() {
 		try {
 			tNombre.setText((String) tablaP.getValueAt(0, 1));
@@ -588,6 +583,253 @@ class BajasV extends JInternalFrame implements ActionListener{
 	}
 	
 }
+
+class CambiosV extends JInternalFrame implements ActionListener{
+	JLabel titulo = new JLabel("Modificar Venta");
+	ImageIcon icono = new ImageIcon("./recursos/C1V.png");
+	ImageIcon iconoBuscar = new ImageIcon("./recursos/buscar-barras.png");
+	JLabel lImg = new JLabel();
+	JLabel lId = new JLabel("Id:");
+	JLabel lIdP = new JLabel("Id Producto");
+	JLabel lNombre = new JLabel("Nombre:");
+	JLabel lPrecio = new JLabel("Precio:");
+	JLabel lFecha = new JLabel("Fecha:");
+	JTextField tId = new JTextField();
+	JTextField tIdP = new JTextField();
+	JTextField tNombre = new JTextField();
+	JTextField tPrecio = new JTextField();
+	JComboBox cD = new JComboBox();
+	JComboBox cM = new JComboBox();
+	JComboBox cA = new JComboBox();
+	JLabel dia = new JLabel("Dia");
+	JLabel mes = new JLabel("Mes");
+	JLabel anio = new JLabel("Año");
+	JButton bCambiar = new JButton("Guardar Cambios");
+	JButton bBorrar = new JButton("Limpiar");
+	JButton bCancelar = new JButton("Cancelar");
+	JButton bBuscar = new JButton();
+	JTable tabla = new JTable();
+	JTable tablaP = new JTable();
+	JButton bHoy = new JButton("Hoy");
+	java.util.Date fecha = new Date();
+	
+	public void obtenerRegistroTabla() {
+		int i = (int)tabla.getValueAt(tabla.getSelectedRow(), 0);
+		tId.setText(i+""); 
+		int iP = (int)tabla.getValueAt(tabla.getSelectedRow(), 1);
+		tIdP.setText(iP+"");
+		tNombre.setText((String) tabla.getValueAt(tabla.getSelectedRow(), 2));
+		BigDecimal p = (BigDecimal) tabla.getValueAt(tabla.getSelectedRow(), 3);
+		tPrecio.setText((p+""));
+	}
+	public void atuaclizaTabla(JTable tabla) {
+		try {
+			String controlador = "com.mysql.cj.jdbc.Driver";
+			String url = "jdbc:mysql://localhost:3306/compu1xd1";
+			String Consulta = "SELECT * FROM ventas";		
+			ResultSetTableModel modeloDatos = null;
+			try {
+				modeloDatos = new ResultSetTableModel(controlador, url, Consulta);
+			}catch (ClassNotFoundException ex) {
+				JOptionPane.showMessageDialog(getContentPane(), ex);
+			}
+			tabla.setModel(modeloDatos);
+		}//Try
+		catch (Exception sqle) {
+			JOptionPane.showMessageDialog(getContentPane(), sqle);
+		}
+	}
+	public void obtenerRegistro() {
+		try {
+			tNombre.setText((String) tablaP.getValueAt(0, 1));
+			BigDecimal p = (BigDecimal) tablaP.getValueAt(0, 2);
+			tPrecio.setText((p+""));
+		}catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Producto no existe");
+			tNombre.setText("");
+			tPrecio.setText("");
+		}
+		
+	}
+	
+	
+	
+	public CambiosV(){
+		getContentPane().setLayout(null);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
+		setSize(683, 538);
+		setTitle("Realizar Devolucion");
+		setBackground(new Color(255,255,255));
+		
+		titulo.setBounds(140, 30, 300,20 );
+		titulo.setFont(new Font("Arial Black", Font.PLAIN, 25));
+		add(titulo);
+		
+		lImg.setBounds(430, 15, 50, 50);
+		lImg.setIcon(new ImageIcon(icono.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
+		add(lImg);
+		
+		lId.setBounds(100, 100, 50, 20);
+		add(lId);
+		lIdP.setBounds(100, 150, 100, 20);
+		add(lIdP);
+		lNombre.setBounds(100, 200, 50, 20);
+		add(lNombre);
+		lPrecio.setBounds(100, 250, 50, 20);
+		add(lPrecio);
+		lFecha.setBounds(100, 310, 50, 20);
+		add(lFecha);
+		dia.setBounds(160, 290, 50, 20);
+		add(dia);
+		mes.setBounds(230, 290, 50, 20);
+		add(mes);
+		anio.setBounds(320, 290, 50, 20);
+		add(anio);
+		
+		
+		tId.setBounds(125, 100, 300, 20);
+		tId.setBackground(new Color(230,230,230));
+		tId.addKeyListener(new KeyAdapter(){
+			   public void keyTyped(KeyEvent e){
+				      char caracter = e.getKeyChar();
+				      if(((caracter < 48) || (caracter > 57)) &&(caracter != '\b')){
+				         e.consume(); 
+				      }
+				   }
+				});
+		add(tId);
+		tIdP.setBounds(180, 150, 245, 20);
+		tIdP.setBackground(new Color(230,230,230));
+		
+		add(tIdP);
+		tNombre.setBounds(160, 200, 265, 20);
+		tNombre.setBackground(new Color(230,230,230));
+		add(tNombre);
+		tPrecio.setBounds(150, 250, 275, 20);
+		tPrecio.setBackground(new Color(230,230,230));
+		add(tPrecio);
+		cD.setBounds(150, 310, 50, 20);
+		for(int i = 1;i!=32;i=i+1) {
+			if(i<10) {
+				cD.addItem("0"+i);
+			}else {
+				cD.addItem(""+i);
+			}
+			
+		}
+		add(cD);
+		
+		
+		
+		cM.setBounds(200, 310, 100, 20);
+		cM.addItem("ENERO");
+		cM.addItem("FEBRERO");
+		cM.addItem("MARZO");
+		cM.addItem("ABRIL");
+		cM.addItem("MAYO");
+		cM.addItem("JUNIO");
+		cM.addItem("JULIO");
+		cM.addItem("AGOSTO");
+		cM.addItem("SEPTIEMBRE");
+		cM.addItem("OCTUBRE");
+		cM.addItem("NOVIEMBRE");
+		cM.addItem("DICIEMBRE");
+		add(cM);
+		cA.setBounds(300, 310, 80, 20);
+		for(int i = 2021;i!=2051;i=i+1) {
+			cA.addItem(""+i);
+		}
+		add(cA);
+	
+	
+		
+		
+		bBorrar.setBounds(550, 95, 100, 30);
+		bBorrar.setBackground(new Color(0,170,255));
+		bBorrar.addActionListener(this);
+		add(bBorrar);
+		
+		bCambiar.setBounds(475, 150, 150, 30);
+		bCambiar.setBackground(new Color(255,175,175));
+		bCambiar.addActionListener(this);
+		add(bCambiar);
+		
+		bCancelar.setBounds(500, 210, 100, 30);
+		bCancelar.setBackground(new Color(255,200,0));
+		bCancelar.addActionListener(this);
+		add(bCancelar);
+		
+		bBuscar.setBounds(450, 95, 50, 30);
+		bBuscar.setIcon(iconoBuscar);
+		bBuscar.addActionListener(this);
+		add(bBuscar);
+		
+	
+		
+		
+		String controlador = "com.mysql.cj.jdbc.Driver";
+		String url = "jdbc:mysql://localhost:3306/compu1xd1";
+		String Consulta = "SELECT * FROM ventas";
+		ResultSetTableModel modeloDatos = null;
+		try {
+			modeloDatos = new ResultSetTableModel(controlador, url, Consulta);
+		}catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		JScrollPane escroll = new JScrollPane(tabla);
+		tabla.setModel(modeloDatos);
+		tabla.addMouseListener(new java.awt.event.MouseAdapter() {@Override public void mouseClicked(java.awt.event.MouseEvent evt) { obtenerRegistroTabla();}         });
+		escroll.setBounds(40, 350, 600, 130);
+		add(escroll);
+		
+	}
+	public void atuaclizaTabla(String sql) {
+		try {
+			String controlador = "com.mysql.cj.jdbc.Driver";
+			String url = "jdbc:mysql://localhost:3306/compu1xd1";
+			
+			ResultSetTableModel modeloDatos = null;
+			try {
+				modeloDatos = new ResultSetTableModel(controlador, url, sql);
+			}catch (ClassNotFoundException ex) {
+				JOptionPane.showMessageDialog(getContentPane(), ex);
+			}
+			tabla.setModel(modeloDatos);
+		}//Try
+		catch (Exception sqle) {
+			JOptionPane.showMessageDialog(getContentPane(), sqle);
+		}
+	}
+	
+	
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource()==bBuscar) {
+			String sql = "SELECT * FROM ventas ";
+			boolean primero=true;
+				if (!primero) {sql+=" AND ";}else {sql+="WHERE ";}
+				primero=false;
+				sql+=("idVenta = '"+tId.getText()+"'");
+				atuaclizaTabla(sql);
+		}else if(e.getSource()==bBorrar) {
+			tId.setText("");
+			tIdP.setText("");
+			tNombre.setText("");
+			tPrecio.setText("");
+		}else if(e.getSource()==bCancelar) {
+			setVisible(false);
+		}else if(e.getSource()==bCambiar) {
+			String i  = (tId.getText());
+			
+		}
+		
+	}
+	
+}
+
 
 
 class AltasP extends JInternalFrame implements ActionListener{
@@ -1441,6 +1683,11 @@ class VentanaPrincipal extends JFrame implements ActionListener{
 			BajasV bv = new BajasV();
 			dp.add(bv);
 			bv.setVisible(true);
+			add(dp);
+		}else if(e.getSource()==updateVenta) {
+			CambiosV cv = new CambiosV();
+			dp.add(cv);
+			cv.setVisible(true);
 			add(dp);
 		}
 		
