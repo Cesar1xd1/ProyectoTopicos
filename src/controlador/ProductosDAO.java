@@ -23,7 +23,6 @@ public class ProductosDAO {
 	
 	public boolean eliminarRegistro(String nc) {
 		boolean resultado = false;
-		
 		String sql = "DELETE FROM productos WHERE id = \""+nc+"\"";
 		resultado = conexion.ejecutarInstruccion(sql);
 		

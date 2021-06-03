@@ -931,7 +931,7 @@ class CambiosV extends JInternalFrame implements ActionListener{
 				VentasDAO vDAO = new VentasDAO();
 				if(vDAO.modificarRegistro(v)) {
 				}else {
-					JOptionPane.showMessageDialog(null, "Nombre no");
+					JOptionPane.showMessageDialog(null, "No se modifico");
 				}
 				atuaclizaTabla(tabla);
 			}
@@ -943,8 +943,8 @@ class CambiosV extends JInternalFrame implements ActionListener{
 	
 }
 class ConsultasV extends JInternalFrame implements ActionListener{
-	JLabel titulo = new JLabel("Realizar Devolución");
-	ImageIcon icono = new ImageIcon("./recursos/BV.png");
+	JLabel titulo = new JLabel("Buscar Venta");
+	ImageIcon icono = new ImageIcon("./recursos/C2.png");
 	ImageIcon iconoBuscar = new ImageIcon("./recursos/buscar-barras.png");
 	JLabel lImg = new JLabel();
 	JLabel lId = new JLabel("Id:");
@@ -1022,7 +1022,7 @@ class ConsultasV extends JInternalFrame implements ActionListener{
 		getContentPane().setLayout(null);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		setSize(683, 538);
-		setTitle("Realizar Devolucion");
+		setTitle("Buscar Venta");
 		setBackground(new Color(255,255,255));
 		
 		titulo.setBounds(140, 30, 300,20 );
@@ -1033,20 +1033,128 @@ class ConsultasV extends JInternalFrame implements ActionListener{
 		lImg.setIcon(new ImageIcon(icono.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
 		add(lImg);
 		
+		lFiltros.setBounds(40, 60, 130, 20);
+		add(lFiltros);
+		rbTodos.setBounds(30, 100, 90, 20);
+		rbTodos.setBackground(new Color(255,255,255));
+		bGrupo.add(rbTodos);
+		add(rbTodos);
+		rbTodos.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tId.setEnabled(true);
+				tIdP.setEnabled(true);
+				tNombre.setEnabled(true);
+				tPrecio.setEnabled(true);
+				cD.setEnabled(true);
+				cM.setEnabled(true);
+				cA.setEnabled(true);
+				bHoy.setEnabled(true);
+			}
+		});
+		
 		rbId.setBounds(120, 100, 20, 20);
 		rbId.setBackground(new Color(255,255,255));
 		bGrupo.add(rbId);
 		add(rbId);
 		lId.setBounds(150, 100, 50, 20);
 		add(lId);
+		rbId.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tId.setEnabled(true);
+				tIdP.setEnabled(false);
+				tNombre.setEnabled(false);
+				tPrecio.setEnabled(false);
+				cD.setEnabled(false);
+				cM.setEnabled(false);
+				cA.setEnabled(false);
+				bHoy.setEnabled(false);
+			}
+		});
+		
+		rbIdP.setBounds(120, 150, 20, 20);
+		rbIdP.setBackground(new Color(255,255,255));
+		bGrupo.add(rbIdP);
+		add(rbIdP);
 		lIdP.setBounds(150, 150, 100, 20);
 		add(lIdP);
+		rbIdP.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tId.setEnabled(false);
+				tIdP.setEnabled(true);
+				tNombre.setEnabled(false);
+				tPrecio.setEnabled(false);
+				cD.setEnabled(false);
+				cM.setEnabled(false);
+				cA.setEnabled(false);
+				bHoy.setEnabled(false);
+			}
+		});
+		
+		rbNombre.setBounds(120, 200, 20, 20);
+		rbNombre.setBackground(new Color(255,255,255));
+		bGrupo.add(rbNombre);
+		add(rbNombre);
 		lNombre.setBounds(150, 200, 50, 20);
 		add(lNombre);
+		rbNombre.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tId.setEnabled(false);
+				tIdP.setEnabled(false);
+				tNombre.setEnabled(true);
+				tPrecio.setEnabled(false);
+				cD.setEnabled(false);
+				cM.setEnabled(false);
+				cA.setEnabled(false);
+				bHoy.setEnabled(false);
+			}
+		});
+		
+		rbPrecio.setBounds(120, 250, 20, 20);
+		rbPrecio.setBackground(new Color(255,255,255));
+		bGrupo.add(rbPrecio);
+		add(rbPrecio);
 		lPrecio.setBounds(150, 250, 50, 20);
 		add(lPrecio);
+		rbPrecio.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tId.setEnabled(false);
+				tIdP.setEnabled(false);
+				tNombre.setEnabled(false);
+				tPrecio.setEnabled(true);
+				cD.setEnabled(false);
+				cM.setEnabled(false);
+				cA.setEnabled(false);
+				bHoy.setEnabled(false);
+			}
+		});
+		
+
+		rbFecha.setBounds(120, 310, 20, 20);
+		rbFecha.setBackground(new Color(255,255,255));
+		bGrupo.add(rbFecha);
+		add(rbFecha);
+		rbFecha.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tId.setEnabled(false);
+				tIdP.setEnabled(false);
+				tNombre.setEnabled(false);
+				tPrecio.setEnabled(false);
+				cD.setEnabled(true);
+				cM.setEnabled(true);
+				cA.setEnabled(true);
+				bHoy.setEnabled(true);
+			}
+		});
+		
 		lFecha.setBounds(150, 310, 50, 20);
 		add(lFecha);
+		
 		dia.setBounds(210, 290, 50, 20);
 		add(dia);
 		mes.setBounds(280, 290, 50, 20);
@@ -1152,6 +1260,8 @@ class ConsultasV extends JInternalFrame implements ActionListener{
 		add(escroll);
 		
 	}
+	
+	
 	public void atuaclizaTabla(String sql) {
 		try {
 			String controlador = "com.mysql.cj.jdbc.Driver";
@@ -1461,7 +1571,6 @@ class BajasP extends JInternalFrame implements ActionListener{
 		
 		JScrollPane escroll = new JScrollPane(tabla);
 		tabla.setModel(modeloDatos);
-		
 		escroll.setBounds(40, 270, 500, 130);
 		tabla.addMouseListener(new java.awt.event.MouseAdapter() {@Override public void mouseClicked(java.awt.event.MouseEvent evt) { obtenerRegistroTabla();}         });
 		add(escroll);
@@ -1493,7 +1602,6 @@ class BajasP extends JInternalFrame implements ActionListener{
 				if (!primero) {sql+=" AND ";}else {sql+="WHERE ";}
 				primero=false;
 				sql+=("id = '"+tId.getText()+"'");
-				
 				atuaclizaTabla(sql);
 		}
 		
@@ -1895,10 +2003,8 @@ class ConsultasP extends JInternalFrame implements ActionListener{
 			tId.setText("");
 			tNombre.setText("");
 			tPrecio.setText("");
-		}
-		else if(e.getSource()==bCancelar) {
+		}else if(e.getSource()==bCancelar) {
 			setVisible(false);
-			
 		}else if(e.getSource()==bBuscar) {
 			String sql = "SELECT * FROM productos ";
 			if(rbId.isSelected()) {
