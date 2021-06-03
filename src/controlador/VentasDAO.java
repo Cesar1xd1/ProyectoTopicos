@@ -34,11 +34,9 @@ public class VentasDAO {
 	
 	public boolean modificarRegistro(Venta ve) {
 		boolean resultado = false;
-		
-		String sql = "UPDATE ventas SET idProducto='"+ve.getIdProducto()+"', nombreProducto='"+ve.getNombreProducto()+"', precio='" + ve.getPrecio()+"', fecha='"+ve.getFecha()
-                + "       WHERE idVenta = '"+ve.getIdVenta()+"';";
+		String sql = "UPDATE ventas SET idProducto="+ve.getIdProducto()+",nombreProducto='"+ve.getNombreProducto()+"',precio=" + ve.getPrecio()+",fecha='"+ve.getFecha()
+                + "'       WHERE idVenta="+ve.getIdVenta()+";";
 		resultado = conexion.ejecutarInstruccion(sql);
-		
 		return resultado;
 	}
 	

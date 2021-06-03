@@ -379,6 +379,7 @@ class BajasV extends JInternalFrame implements ActionListener{
 			JOptionPane.showMessageDialog(getContentPane(), sqle);
 		}
 	}
+	
 	public void obtenerRegistro() {
 		try {
 			tNombre.setText((String) tablaP.getValueAt(0, 1));
@@ -608,6 +609,7 @@ class CambiosV extends JInternalFrame implements ActionListener{
 	JButton bBorrar = new JButton("Limpiar");
 	JButton bCancelar = new JButton("Cancelar");
 	JButton bBuscar = new JButton();
+	JButton bBuscarP = new JButton();
 	JTable tabla = new JTable();
 	JTable tablaP = new JTable();
 	JButton bHoy = new JButton("Hoy");
@@ -621,6 +623,42 @@ class CambiosV extends JInternalFrame implements ActionListener{
 		tNombre.setText((String) tabla.getValueAt(tabla.getSelectedRow(), 2));
 		BigDecimal p = (BigDecimal) tabla.getValueAt(tabla.getSelectedRow(), 3);
 		tPrecio.setText((p+""));
+		Object fecha =  tabla.getValueAt(tabla.getSelectedRow(), 4);
+		String x = String.valueOf(fecha);
+		String [] parteFecha = x.split("-");
+		String d = parteFecha[2];
+		String m = parteFecha[1];
+		String a = parteFecha[0];
+		cD.setSelectedItem(d);
+		cA.setSelectedItem(a);
+		if(m.equals("01")) {
+			cM.setSelectedIndex(0);
+		}else if(m.equals("02")){
+			cM.setSelectedIndex(1);
+		}else if(m.equals("03")){
+			cM.setSelectedIndex(2);
+		}else if(m.equals("04")){
+			cM.setSelectedIndex(3);
+		}else if(m.equals("05")){
+			cM.setSelectedIndex(4);
+		}else if(m.equals("06")){
+			cM.setSelectedIndex(5);
+		}else if(m.equals("07")){
+			cM.setSelectedIndex(6);
+		}else if(m.equals("08")){
+			cM.setSelectedIndex(7);
+		}else if(m.equals("09")){
+			cM.setSelectedIndex(8);
+		}else if(m.equals("10")){
+			cM.setSelectedIndex(9);
+		}else if(m.equals("11")){
+			cM.setSelectedIndex(10);
+		}else if(m.equals("12")){
+			cM.setSelectedIndex(11);
+		}
+		
+		
+		
 	}
 	public void atuaclizaTabla(JTable tabla) {
 		try {
@@ -639,6 +677,7 @@ class CambiosV extends JInternalFrame implements ActionListener{
 			JOptionPane.showMessageDialog(getContentPane(), sqle);
 		}
 	}
+	
 	public void obtenerRegistro() {
 		try {
 			tNombre.setText((String) tablaP.getValueAt(0, 1));
@@ -749,7 +788,7 @@ class CambiosV extends JInternalFrame implements ActionListener{
 		bBorrar.addActionListener(this);
 		add(bBorrar);
 		
-		bCambiar.setBounds(475, 150, 150, 30);
+		bCambiar.setBounds(520, 150, 135, 30);
 		bCambiar.setBackground(new Color(255,175,175));
 		bCambiar.addActionListener(this);
 		add(bCambiar);
@@ -759,10 +798,15 @@ class CambiosV extends JInternalFrame implements ActionListener{
 		bCancelar.addActionListener(this);
 		add(bCancelar);
 		
-		bBuscar.setBounds(450, 95, 50, 30);
+		bBuscar.setBounds(440, 95, 50, 30);
 		bBuscar.setIcon(iconoBuscar);
 		bBuscar.addActionListener(this);
 		add(bBuscar);
+		
+		bBuscarP.setBounds(440, 145, 50, 30);
+		bBuscarP.setIcon(iconoBuscar);
+		bBuscarP.addActionListener(this);
+		add(bBuscarP);
 		
 	
 		
@@ -784,6 +828,11 @@ class CambiosV extends JInternalFrame implements ActionListener{
 		escroll.setBounds(40, 350, 600, 130);
 		add(escroll);
 		
+		tNombre.setEnabled(false);
+		tPrecio.setEnabled(false);
+		System.out.println("xd");
+		
+		
 	}
 	public void atuaclizaTabla(String sql) {
 		try {
@@ -802,7 +851,36 @@ class CambiosV extends JInternalFrame implements ActionListener{
 			JOptionPane.showMessageDialog(getContentPane(), sqle);
 		}
 	}
+	public void atuaclizaTablaP(String sql) {
+		try {
+			String controlador = "com.mysql.cj.jdbc.Driver";
+			String url = "jdbc:mysql://localhost:3306/compu1xd1";
+			
+			ResultSetTableModel modeloDatos = null;
+			try {
+				modeloDatos = new ResultSetTableModel(controlador, url, sql);
+			}catch (ClassNotFoundException ex) {
+				JOptionPane.showMessageDialog(getContentPane(), ex);
+			}
+			tablaP.setModel(modeloDatos);
+		}//Try
+		catch (Exception sqle) {
+			JOptionPane.showMessageDialog(getContentPane(), sqle);
+		}
+	}
 	
+	public void obtenerRegistro1() {
+		try {
+			tNombre.setText((String) tablaP.getValueAt(0, 1));
+			BigDecimal p = (BigDecimal) tablaP.getValueAt(0, 2);
+			tPrecio.setText((p+""));
+		}catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Producto no existe");
+			tNombre.setText("");
+			tPrecio.setText("");
+		}
+		
+	}
 	
 	
 	@Override
@@ -821,8 +899,64 @@ class CambiosV extends JInternalFrame implements ActionListener{
 			tPrecio.setText("");
 		}else if(e.getSource()==bCancelar) {
 			setVisible(false);
+		}else if(e.getSource()==bBuscarP) {
+			String s = "SELECT * FROM productos WHERE id = '"+tIdP.getText()+"'";
+			atuaclizaTablaP(s);
+			obtenerRegistro1();
+			
 		}else if(e.getSource()==bCambiar) {
-			String i  = (tId.getText());
+			String s = "SELECT * FROM productos WHERE id = '"+tIdP.getText()+"'";
+			atuaclizaTablaP(s);
+			obtenerRegistro1();
+			if(tNombre.getText().equals("")||tPrecio.getText().equals("")||tIdP.getText().equals("")) {
+				JOptionPane.showMessageDialog(null,"No debe Haber campos vacios");
+			}else {
+				String id = tId.getText();
+				String idP= tIdP.getText();
+				String nombre = tNombre.getText();
+				String precio = tPrecio.getText();
+				String dia = (String) cD.getSelectedItem();
+				String mes = "";
+				if (cM.getSelectedIndex()==0) {
+					mes = "01";
+				}else if(cM.getSelectedIndex()==1) {
+					mes = "02";
+				}else if(cM.getSelectedIndex()==2) {
+					mes = "03";
+				}else if(cM.getSelectedIndex()==3) {
+					mes = "04";
+				}else if(cM.getSelectedIndex()==4) {
+					mes = "05";
+				}else if(cM.getSelectedIndex()==5) {
+					mes = "06";
+				}else if(cM.getSelectedIndex()==6) {
+					mes = "07";
+				}else if(cM.getSelectedIndex()==7) {
+					mes = "08";
+				}else if(cM.getSelectedIndex()==8) {
+					mes = "09";
+				}else if(cM.getSelectedIndex()==9) {
+					mes = "10";
+				}else if(cM.getSelectedIndex()==10) {
+					mes = "11";
+				}else if(cM.getSelectedIndex()==11) {
+					mes = "12";
+				}
+				String año = (String) cA.getSelectedItem();
+				String fecha = año+"-"+mes+"-"+dia;
+				int iid = Integer.parseInt(id);
+				int iidp = Integer.parseInt(idP);
+				double dp = Double.parseDouble(precio);
+				System.out.println(iid+" "+iidp+" "+nombre+" "+dp+" "+fecha);
+				Venta v = new Venta(iid,iidp, nombre,dp, fecha);
+				VentasDAO vDAO = new VentasDAO();
+				if(vDAO.modificarRegistro(v)) {
+				}else {
+					JOptionPane.showMessageDialog(null, "Nombre no");
+				}
+				atuaclizaTabla(tabla);
+			}
+			
 			
 		}
 		
@@ -1301,11 +1435,8 @@ class CambiosP extends JInternalFrame implements ActionListener{
 					dPrecio = Double.parseDouble(precio);
 				}catch(Exception ex){
 					posible = false;
-					JOptionPane.showMessageDialog(null, "Precio invalido");
-					
+					JOptionPane.showMessageDialog(null, "Precio invalido");	
 				}
-				
-				
 				if(posible == true ) {
 					Productos p = new Productos(dId, nombre, dPrecio);
 					ProductosDAO pDAO = new ProductosDAO();
