@@ -1,15 +1,11 @@
 package vista;
 
 import javax.swing.*;
-
-
-
 import java.awt.*;
 import java.awt.event.*;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Date;
-
 import controlador.ProductosDAO;
 import controlador.VentasDAO;
 import modelo.Productos;
@@ -876,8 +872,7 @@ class BajasP extends JInternalFrame implements ActionListener{
 			String i  = (tId.getText());
 			ProductosDAO pDAO = new ProductosDAO();
 			if(pDAO.eliminarRegistro(i)) {
-				
-			}else {
+						}else {
 				JOptionPane.showMessageDialog(null,"El registro no existe y no puede ser eliminado");
 			}
 			atuaclizaTabla("SELECT * FROM productos");
