@@ -962,14 +962,21 @@ class ConsultasV extends JInternalFrame implements ActionListener{
 	JLabel dia = new JLabel("Dia");
 	JLabel mes = new JLabel("Mes");
 	JLabel anio = new JLabel("Año");
-	JButton bEliminar = new JButton("Eliminar");
+	JButton bBuscarR = new JButton("");
 	JButton bBorrar = new JButton("Limpiar");
 	JButton bCancelar = new JButton("Cancelar");
-	JButton bBuscar = new JButton();
 	JTable tabla = new JTable();
 	JTable tablaP = new JTable();
 	JButton bHoy = new JButton("Hoy");
 	java.util.Date fecha = new Date();
+	JLabel lFiltros = new JLabel("Filtro de busqueda");
+	JRadioButton rbTodos = new JRadioButton("TODOS");
+	JRadioButton rbId = new JRadioButton();
+	JRadioButton rbIdP = new JRadioButton();
+	JRadioButton rbNombre = new JRadioButton();
+	JRadioButton rbPrecio = new JRadioButton();
+	JRadioButton rbFecha = new JRadioButton();
+	ButtonGroup bGrupo = new ButtonGroup();
 	
 	public void obtenerRegistroTabla() {
 		int i = (int)tabla.getValueAt(tabla.getSelectedRow(), 0);
@@ -1026,24 +1033,28 @@ class ConsultasV extends JInternalFrame implements ActionListener{
 		lImg.setIcon(new ImageIcon(icono.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
 		add(lImg);
 		
-		lId.setBounds(100, 100, 50, 20);
+		rbId.setBounds(120, 100, 20, 20);
+		rbId.setBackground(new Color(255,255,255));
+		bGrupo.add(rbId);
+		add(rbId);
+		lId.setBounds(150, 100, 50, 20);
 		add(lId);
-		lIdP.setBounds(100, 150, 100, 20);
+		lIdP.setBounds(150, 150, 100, 20);
 		add(lIdP);
-		lNombre.setBounds(100, 200, 50, 20);
+		lNombre.setBounds(150, 200, 50, 20);
 		add(lNombre);
-		lPrecio.setBounds(100, 250, 50, 20);
+		lPrecio.setBounds(150, 250, 50, 20);
 		add(lPrecio);
-		lFecha.setBounds(100, 310, 50, 20);
+		lFecha.setBounds(150, 310, 50, 20);
 		add(lFecha);
-		dia.setBounds(160, 290, 50, 20);
+		dia.setBounds(210, 290, 50, 20);
 		add(dia);
-		mes.setBounds(230, 290, 50, 20);
+		mes.setBounds(280, 290, 50, 20);
 		add(mes);
-		anio.setBounds(320, 290, 50, 20);
+		anio.setBounds(370, 290, 50, 20);
 		add(anio);
 		
-		tId.setBounds(125, 100, 300, 20);
+		tId.setBounds(175, 100, 300, 20);
 		tId.setBackground(new Color(230,230,230));
 		tId.addKeyListener(new KeyAdapter(){
 			   public void keyTyped(KeyEvent e){
@@ -1054,17 +1065,17 @@ class ConsultasV extends JInternalFrame implements ActionListener{
 				   }
 				});
 		add(tId);
-		tIdP.setBounds(180, 150, 245, 20);
+		tIdP.setBounds(230, 150, 245, 20);
 		tIdP.setBackground(new Color(230,230,230));
 		
 		add(tIdP);
-		tNombre.setBounds(160, 200, 265, 20);
+		tNombre.setBounds(210, 200, 265, 20);
 		tNombre.setBackground(new Color(230,230,230));
 		add(tNombre);
-		tPrecio.setBounds(150, 250, 275, 20);
+		tPrecio.setBounds(200, 250, 275, 20);
 		tPrecio.setBackground(new Color(230,230,230));
 		add(tPrecio);
-		cD.setBounds(150, 310, 50, 20);
+		cD.setBounds(200, 310, 50, 20);
 		for(int i = 1;i!=32;i=i+1) {
 			if(i<10) {
 				cD.addItem("0"+i);
@@ -1075,7 +1086,7 @@ class ConsultasV extends JInternalFrame implements ActionListener{
 		}
 		add(cD);
 		
-		cM.setBounds(200, 310, 100, 20);
+		cM.setBounds(250, 310, 100, 20);
 		cM.addItem("ENERO");
 		cM.addItem("FEBRERO");
 		cM.addItem("MARZO");
@@ -1089,14 +1100,14 @@ class ConsultasV extends JInternalFrame implements ActionListener{
 		cM.addItem("NOVIEMBRE");
 		cM.addItem("DICIEMBRE");
 		add(cM);
-		cA.setBounds(300, 310, 80, 20);
+		cA.setBounds(350, 310, 80, 20);
 		for(int i = 2021;i!=2051;i=i+1) {
 			cA.addItem(""+i);
 		}
 		add(cA);
 	
 	
-		bHoy.setBounds(380, 310, 70, 20);
+		bHoy.setBounds(430, 310, 70, 20);
 		add(bHoy);
 		bHoy.addActionListener(new ActionListener() {
 			@Override
@@ -1107,10 +1118,10 @@ class ConsultasV extends JInternalFrame implements ActionListener{
 			}
 		});
 		
-		bEliminar.setBounds(550, 90, 100, 30);
-		bEliminar.setBackground(new Color(255,10,10));
-		bEliminar.addActionListener(this);
-		add(bEliminar);
+		bBuscarR.setBounds(550, 90, 100, 30);
+		bBuscarR.setIcon(iconoBuscar);
+		bBuscarR.addActionListener(this);
+		add(bBuscarR);
 		
 		bBorrar.setBounds(550, 150, 100, 30);
 		bBorrar.setBackground(new Color(0,170,255));
@@ -1121,18 +1132,6 @@ class ConsultasV extends JInternalFrame implements ActionListener{
 		bCancelar.setBackground(new Color(255,200,0));
 		bCancelar.addActionListener(this);
 		add(bCancelar);
-		
-		bBuscar.setBounds(450, 95, 50, 30);
-		bBuscar.setIcon(iconoBuscar);
-		bBuscar.addActionListener(this);
-		add(bBuscar);
-		
-		tIdP.setEnabled(false);
-		tNombre.setEnabled(false);
-		tPrecio.setEnabled(false);
-		cD.setEnabled(false);
-		cM.setEnabled(false);
-		cA.setEnabled(false);
 		
 		
 		String controlador = "com.mysql.cj.jdbc.Driver";
@@ -1175,13 +1174,8 @@ class ConsultasV extends JInternalFrame implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource()==bBuscar) {
-			String sql = "SELECT * FROM ventas ";
-			boolean primero=true;
-				if (!primero) {sql+=" AND ";}else {sql+="WHERE ";}
-				primero=false;
-				sql+=("idVenta = '"+tId.getText()+"'");
-				atuaclizaTabla(sql);
+		if(e.getSource()==bBuscarR) {
+			
 		}else if(e.getSource()==bBorrar) {
 			tId.setText("");
 			tIdP.setText("");
@@ -1189,18 +1183,6 @@ class ConsultasV extends JInternalFrame implements ActionListener{
 			tPrecio.setText("");
 		}else if(e.getSource()==bCancelar) {
 			setVisible(false);
-		}else if(e.getSource()==bEliminar) {
-			String i  = (tId.getText());
-			VentasDAO vDAO = new VentasDAO();
-			if(vDAO.eliminarRegistro(i)) {
-			}else {
-				JOptionPane.showMessageDialog(null,"El registro no existe y no puede ser eliminado");
-			}
-			tId.setText("");
-			tIdP.setText("");
-			tNombre.setText("");
-			tPrecio.setText("");
-			atuaclizaTabla(tabla);
 		}
 		
 	}
@@ -2060,6 +2042,11 @@ class VentanaPrincipal extends JFrame implements ActionListener{
 			add(dp);
 		}else if(e.getSource()==updateVenta) {
 			CambiosV cv = new CambiosV();
+			dp.add(cv);
+			cv.setVisible(true);
+			add(dp);
+		}else if(e.getSource()==searchVenta) {
+			ConsultasV cv = new ConsultasV();
 			dp.add(cv);
 			cv.setVisible(true);
 			add(dp);
