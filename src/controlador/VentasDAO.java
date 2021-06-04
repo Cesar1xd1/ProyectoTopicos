@@ -15,20 +15,15 @@ public class VentasDAO {
 	
 	public boolean insertarRegistro(Venta v) {
 		boolean resultado = false;
-		
-		
 		String sql = "INSERT INTO ventas VALUES('"+v.getIdVenta()+"','"+v.getIdProducto()+"','"+v.getNombreProducto()+"','"+v.getPrecio()+"','"+v.getFecha()+"');";
 		resultado = conexion.ejecutarInstruccion(sql);
-		
 		return resultado;
 	}
 	
 	public boolean eliminarRegistro(String nc) {
 		boolean resultado = false;
-		
 		String sql = "DELETE FROM ventas WHERE idVenta = \""+nc+"\"";
 		resultado = conexion.ejecutarInstruccion(sql);
-		
 		return resultado;
 	}
 	

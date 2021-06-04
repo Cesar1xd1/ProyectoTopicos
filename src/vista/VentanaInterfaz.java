@@ -1359,6 +1359,7 @@ class ConsultasV extends JInternalFrame implements ActionListener{
 				String x = laFecha();
 					sql = sql + (" WHERE fecha = '"+x+"';");
 					atuaclizaTabla(sql);
+				
 			}
 		}else if(e.getSource()==bBorrar) {
 			tId.setText("");
@@ -1368,7 +1369,9 @@ class ConsultasV extends JInternalFrame implements ActionListener{
 		}else if(e.getSource()==bCancelar) {
 			setVisible(false);
 		}
+		
 	}
+	
 }
 
 
@@ -2134,6 +2137,8 @@ class VentanaPrincipal extends JFrame implements ActionListener{
 	JInternalFrame prodAltas,prodBajas,prodCambios,prodConsultas;
 	JInternalFrame ventasAltas,ventasBajas,ventasCambios,ventasConsultas;
 	JDesktopPane dp = new JDesktopPane();
+	JLabel bienvenido = new JLabel("BIENVENIDO A");
+	JLabel compu = new JLabel("Compu1xd1");
 	
 	public VentanaPrincipal() {
 		getContentPane().setLayout(null);
@@ -2143,7 +2148,13 @@ class VentanaPrincipal extends JFrame implements ActionListener{
 		setTitle("Compu1xd1");
 		setVisible(true);
 		
-		
+		bienvenido.setBounds(150,100, 600, 50);
+		bienvenido.setFont(new Font("Arial Black", Font.PLAIN, 50));
+		add(bienvenido);
+
+		compu.setBounds(200,150, 600, 50);
+		compu.setFont(new Font("Arial Black", Font.PLAIN, 50));
+		add(compu);
 		
 		menuBar = new JMenuBar();
 			mProductos = new JMenu("Productos");
@@ -2254,7 +2265,7 @@ public class VentanaInterfaz {
 			
 			
 			public void run() {
-				new VentanaPrincipal();
+				new Login();
 			}
 		});
 	}

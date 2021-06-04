@@ -7,9 +7,6 @@ public class Venta {
 	private double precio;
 	private String fecha;
 
-
-	
-	
 	public Venta(int idVenta,int idProducto ,String nombreProducto,double precio,String fecha) {
 		super();
 		this.idVenta = idVenta;
@@ -19,10 +16,6 @@ public class Venta {
 		this.fecha = fecha;
 	
 	}
-
-
-
-
 	public int getIdVenta() {
 		return idVenta;
 	}
@@ -54,9 +47,4 @@ public class Venta {
 		this.fecha = fecha;
 	}
 
-	
-	
-	
-	
-	
 }
