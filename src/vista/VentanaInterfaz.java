@@ -1258,6 +1258,7 @@ class ConsultasV extends JInternalFrame implements ActionListener{
 		tabla.addMouseListener(new java.awt.event.MouseAdapter() {@Override public void mouseClicked(java.awt.event.MouseEvent evt) { obtenerRegistroTabla();}         });
 		escroll.setBounds(40, 350, 600, 130);
 		add(escroll);
+		rbTodos.setSelected(true);
 		
 	}
 	
@@ -1271,21 +1272,94 @@ class ConsultasV extends JInternalFrame implements ActionListener{
 			try {
 				modeloDatos = new ResultSetTableModel(controlador, url, sql);
 			}catch (ClassNotFoundException ex) {
-				JOptionPane.showMessageDialog(getContentPane(), ex);
+				JOptionPane.showMessageDialog(getContentPane(), "xd");
 			}
 			tabla.setModel(modeloDatos);
 		}//Try
 		catch (Exception sqle) {
-			JOptionPane.showMessageDialog(getContentPane(), sqle);
+			JOptionPane.showMessageDialog(getContentPane(),"Ingresa un precio admitible");
 		}
 	}
-	
+	public String laFecha() {
+		String d = (String) cD.getSelectedItem();
+		String m = "";
+		if(cM.getSelectedIndex()==0) {
+			m = "01";
+		}else if(cM.getSelectedIndex()==1) {
+			m = "02";
+		}else if(cM.getSelectedIndex()==2) {
+			m = "03";
+		}else if(cM.getSelectedIndex()==3) {
+			m = "04";
+		}else if(cM.getSelectedIndex()==4) {
+			m = "05";
+		}else if(cM.getSelectedIndex()==5) {
+			m = "06";
+		}else if(cM.getSelectedIndex()==6) {
+			m = "07";
+		}else if(cM.getSelectedIndex()==7) {
+			m = "08";
+		}else if(cM.getSelectedIndex()==8) {
+			m = "09";
+		}else if(cM.getSelectedIndex()==9) {
+			m = "10";
+		}else if(cM.getSelectedIndex()==10) {
+			m = "11";
+		}else if(cM.getSelectedIndex()==11) {
+			m = "12";
+		}
+		String a = (String) cA.getSelectedItem();
+		return a+"-"+m+"-"+d;
+	}
 	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==bBuscarR) {
-			
+			String sql = "SELECT * FROM ventas";
+			if(rbTodos.isSelected()) {
+				if(tId.getText().equals("")||tNombre.getText().equals("")||tIdP.getText().equals("")||tPrecio.getText().equals("")) {
+					JOptionPane.showMessageDialog(null,"Llene todos los filtros para proceder con la consulta");
+				}else {
+					String fecha = laFecha();
+					sql = sql + (" WHERE idVenta = "+tId.getText()) + (" AND idProducto ="+tIdP.getText()) 
+							+ (" AND nombreProducto ='"+tNombre.getText()+"'") + (" AND precio ="+tPrecio.getText())
+							+(" AND fecha ='"+fecha+"'");
+						atuaclizaTabla(sql);		
+				}
+			}else if(rbId.isSelected()) {
+				if(tId.getText().equals("")) {
+					JOptionPane.showMessageDialog(null,"No dejes el campo vacio");
+				}else {
+					sql = sql + (" WHERE idVenta = "+ tId.getText());
+					atuaclizaTabla(sql);
+				}
+			}else if(rbIdP.isSelected()) {
+				if(tIdP.getText().equals("")) {
+					JOptionPane.showMessageDialog(null,"No dejes el campo vacio");
+				}else {
+					sql = sql + (" WHERE idProducto = "+ tIdP.getText());
+					atuaclizaTabla(sql);
+				}
+			}else if(rbNombre.isSelected()) {
+				if(tNombre.getText().equals("")) {
+					JOptionPane.showMessageDialog(null,"No dejes el campo vacio");
+				}else {
+					sql = sql + (" WHERE nombreProducto = '"+ tNombre.getText()+"'");
+					atuaclizaTabla(sql);
+				}
+			}else if(rbPrecio.isSelected()) {
+				if(tPrecio.getText().equals("")) {
+					JOptionPane.showMessageDialog(null,"No dejes el campo vacio");
+				}else {
+					sql = sql + (" WHERE precio = "+ tPrecio.getText());
+					atuaclizaTabla(sql);
+				}
+			}else if(rbFecha.isSelected()) {
+				String x = laFecha();
+					sql = sql + (" WHERE fecha = '"+x+"';");
+					atuaclizaTabla(sql);
+			}
 		}else if(e.getSource()==bBorrar) {
 			tId.setText("");
 			tIdP.setText("");
@@ -1294,9 +1368,7 @@ class ConsultasV extends JInternalFrame implements ActionListener{
 		}else if(e.getSource()==bCancelar) {
 			setVisible(false);
 		}
-		
 	}
-	
 }
 
 
